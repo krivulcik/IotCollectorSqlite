@@ -15,7 +15,7 @@ namespace IotCollectorSqlite.Controllers
     public class DhtController : ControllerBase
     {
         [HttpGet]
-        public string Get(string i, string t, string h)
+        public string Get(string i, string t = "0", string h = "0")
         {
             var temperature = double.Parse(t, CultureInfo.InvariantCulture);
             var humidity = int.Parse(h, CultureInfo.InvariantCulture);
