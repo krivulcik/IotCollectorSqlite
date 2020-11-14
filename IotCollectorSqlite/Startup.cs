@@ -47,7 +47,9 @@ namespace IotCollectorSqlite
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+
+                //endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
 

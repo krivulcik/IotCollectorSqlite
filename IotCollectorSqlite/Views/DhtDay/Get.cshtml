@@ -24,7 +24,7 @@ $.getJSON(
     function (data) {
 
         console.log(data);
-
+        console.log(data.Temperature.reduce((a, b) => a + b[1], 0));
         Highcharts.setOptions({
             time: {
                 timezone: 'Europe/Bratislava'

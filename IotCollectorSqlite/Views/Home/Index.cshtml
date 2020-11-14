@@ -1,0 +1,20 @@
+﻿@using System.Globalization;
+@using IotCollectorSqlite.Controllers;
+@{
+    var data = (List<Station>)ViewBag.Data;
+}
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data-2012-2022.min.js"></script>
+<div id="nav">
+    @foreach(var station in data)
+    {
+        <a href="/DhtDay/Get?stationId=@station.Name&dateString=@DateTimeOffset.FromUnixTimeSeconds(station.Timestamp).ToString("yyyy-MM-dd")">@station.Name</a>
+    }
+</div>
+
+
