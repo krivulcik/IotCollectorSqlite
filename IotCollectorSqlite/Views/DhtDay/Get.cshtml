@@ -2,6 +2,7 @@
 @{
     var dateString = (string)ViewBag.DateString;
     var stationId = (string)ViewBag.StationId;
+    var lookBack = (int)ViewBag.LookBack;
     var date = DateTime.ParseExact(dateString, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 }
 
@@ -12,15 +13,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data-2012-2022.min.js"></script>
 <div id="nav">
-    <a href="/DhtDay/Get?stationId=@stationId&dateString=@date.AddDays(-1).ToString("yyyy-MM-dd")">PREV (@date.AddDays(-1).ToString("yyyy-MM-dd"))</a>
-    <a href="/DhtDay/Get?stationId=@stationId&dateString=@date.AddDays(1).ToString("yyyy-MM-dd")">NEXT (@date.AddDays(1).ToString("yyyy-MM-dd"))</a>
+    <a href="/DhtDay/Get?stationId=@stationId&dateString=@date.AddDays(-1).ToString("yyyy-MM-dd")&lookBack=@lookBack">PREV (@date.AddDays(-1).ToString("yyyy-MM-dd")) (@lookBack period)</a>
+    <a href="/DhtDay/Get?stationId=@stationId&dateString=@date.AddDays(1).ToString("yyyy-MM-dd")&lookBack=@lookBack">NEXT (@date.AddDays(1).ToString("yyyy-MM-dd")) (@lookBack period)</a>
 </div>
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <script>
 
 $.getJSON(
-    '/Dht/GetDay?stationId=@stationId&dateString=@dateString',
+    '/Dht/GetDay?stationId=@stationId&dateString=@dateString&lookBack=@lookBack',
     function (data) {
 
         console.log(data);

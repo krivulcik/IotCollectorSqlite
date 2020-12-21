@@ -44,11 +44,11 @@ namespace IotCollectorSqlite.Controllers
         }
 
         [HttpGet]
-        public Dictionary<string, double[][]> GetDay(string stationId, string dateString)
+        public Dictionary<string, double[][]> GetDay(string stationId, string dateString, LookBack lookBack)
         {
             var date = DateTime.ParseExact(dateString, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-            var readings = GetReadings(stationId, date).ToArray();
+            var readings = GetReadings(stationId, date, lookBack).ToArray();
 
             return new Dictionary<string, double[][]>
             {
@@ -57,9 +57,9 @@ namespace IotCollectorSqlite.Controllers
             };
         }
 
-        public IEnumerable<Reading> GetReadings(string stationId, DateTime date)
+        public IEnumerable<Reading> GetReadings(string stationId, DateTime date, LookBack lookBack = LookBack.Day)
         {
-            var endDate = date.AddDays(1);
+            var startDate = date.AddDays(-(int)lookBack);
 
             using var con = new SQLiteConnection(@"URI=file:./test.db");
             con.Open();
@@ -68,8 +68,8 @@ namespace IotCollectorSqlite.Controllers
             cmd.CommandText = "SELECT timestamp, temperature, humidity FROM dht_data WHERE station = @station AND timestamp >= @startTimestamp AND timestamp < @endTimestamp ORDER BY timestamp ASC LIMIT 3000;";
 
             cmd.Parameters.AddWithValue("@station", stationId);
-            cmd.Parameters.AddWithValue("@startTimestamp", ((DateTimeOffset)date).ToUnixTimeSeconds());
-            cmd.Parameters.AddWithValue("@endTimestamp", ((DateTimeOffset)endDate).ToUnixTimeSeconds());
+            cmd.Parameters.AddWithValue("@startTimestamp", ((DateTimeOffset)startDate).ToUnixTimeSeconds());
+            cmd.Parameters.AddWithValue("@endTimestamp", ((DateTimeOffset)date).ToUnixTimeSeconds());
             cmd.Prepare();
 
             using SQLiteDataReader rdr = cmd.ExecuteReader();
@@ -85,6 +85,12 @@ namespace IotCollectorSqlite.Controllers
             }
 
             con.Close();
+        }
+
+        public enum LookBack{
+            Day = 1,
+            Week = 7,
+            Month = 30
         }
     }
 }
