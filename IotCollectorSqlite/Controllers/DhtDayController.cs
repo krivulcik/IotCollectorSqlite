@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using IotCollectorSqlite.Model;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using static IotCollectorSqlite.Controllers.DhtController;
 
 namespace IotCollectorSqlite.Controllers

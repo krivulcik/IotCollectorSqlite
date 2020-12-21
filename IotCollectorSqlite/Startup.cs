@@ -30,9 +30,9 @@ namespace IotCollectorSqlite
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration)
         {
-            InitDatabase(@"URI=file:./test.db");
+            InitDatabase(@"URI=file:" + configuration["DatabasePath"]);
 
             if (env.IsDevelopment())
             {

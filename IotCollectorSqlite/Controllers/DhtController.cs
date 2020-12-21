@@ -1,12 +1,11 @@
-﻿using System;
+﻿using IotCollectorSqlite.Model;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
-using IotCollectorSqlite.Model;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace IotCollectorSqlite.Controllers
 {
@@ -14,6 +13,12 @@ namespace IotCollectorSqlite.Controllers
     [Route("[controller]/[action]")]
     public class DhtController : ControllerBase
     {
+        private IConfiguration _configuration;
+        public DhtController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         [HttpGet]
         public string Get(string i, string t = "0", string h = "0")
         {
@@ -27,7 +32,7 @@ namespace IotCollectorSqlite.Controllers
 
         public void StoreReading(string stationId, double temperature, int humidity)
         {
-            using var con = new SQLiteConnection(@"URI=file:./test.db");
+            using var con = new SQLiteConnection(@"URI=file:" + _configuration["DatabasePath"]);
             con.Open();
 
             using var cmd = new SQLiteCommand(con);
@@ -61,7 +66,7 @@ namespace IotCollectorSqlite.Controllers
         {
             var startDate = date.AddDays(-(int)lookBack);
 
-            using var con = new SQLiteConnection(@"URI=file:./test.db");
+            using var con = new SQLiteConnection(@"URI=file:" + _configuration["DatabasePath"]);
             con.Open();
 
             using var cmd = new SQLiteCommand(con);
