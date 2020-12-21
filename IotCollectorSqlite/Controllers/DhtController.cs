@@ -65,7 +65,7 @@ namespace IotCollectorSqlite.Controllers
             con.Open();
 
             using var cmd = new SQLiteCommand(con);
-            cmd.CommandText = "SELECT timestamp, temperature, humidity FROM dht_data WHERE station = @station AND timestamp >= @startTimestamp AND timestamp < @endTimestamp ORDER BY timestamp ASC LIMIT 3000;";
+            cmd.CommandText = "SELECT timestamp, temperature, humidity FROM dht_data WHERE station = @station AND timestamp >= @startTimestamp AND timestamp < @endTimestamp ORDER BY timestamp ASC LIMIT 30000;";
 
             cmd.Parameters.AddWithValue("@station", stationId);
             cmd.Parameters.AddWithValue("@startTimestamp", ((DateTimeOffset)startDate).ToUnixTimeSeconds());
